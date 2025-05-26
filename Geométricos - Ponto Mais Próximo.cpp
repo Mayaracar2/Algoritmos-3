@@ -1,39 +1,45 @@
 #include <iostream>
-#include <limits>
+#include <cmath>
 using namespace std;
 
-int main ()
-{
-    int N;
-    cin >> N;
+struct ponto {
+    int x, y;
+};
 
-    int x[100], y[100];
+// Função para calcular a distância ao quadrado entre dois pontos
+int dist2(ponto a, ponto b) {
+    int dx = a.x - b.x;
+    int dy = a.y - b.y;
+    return dx * dx + dy * dy;
+}
 
-    for (int i = 0; i < N; i++) {
-        cin >> x[i] >> y[i];
+int main() {
+    int n;
+    cin >> n;
+
+    ponto vetorA[100]; // até 100 pontos como diz o enunciado
+    for (int i = 0; i < n; i++) {
+        cin >> vetorA[i].x >> vetorA[i].y;
     }
 
-    int ux, uy;
-    cin >> ux >> uy;
+    ponto u;
+    cin >> u.x >> u.y;
 
-    int melhorX, melhorY;
-    int menorDist = numeric_limits<int>::max();
+    ponto maisProx = vetorA[0];
+    int menorDist = dist2(u, vetorA[0]);
 
-    for (int i = 0; i < N; i++) {
-        int dx = x[i] - ux;
-        int dy = y[i] - uy;
-        int dist = dx * dx + dy * dy;
+    for (int i = 1; i < n; i++) {
+        int d = dist2(u, vetorA[i]);
 
-        if (dist < menorDist ||
-            (dist == menorDist && x[i] < melhorX) ||
-            (dist == menorDist && x[i] == melhorX && y[i] < melhorY)) {
-            menorDist = dist;
-            melhorX = x[i];
-            melhorY = y[i];
+        if (d < menorDist || 
+            (d == menorDist && vetorA[i].x < maisProx.x) || 
+            (d == menorDist && vetorA[i].x == maisProx.x && vetorA[i].y < maisProx.y)) {
+            menorDist = d;
+            maisProx = vetorA[i];
         }
     }
 
-    cout << melhorX << " " << melhorY << endl;
+    cout << maisProx.x << " " << maisProx.y << endl;
 
     return 0;
 }
